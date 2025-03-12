@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { AnswerSection } from "./AnswerSection";
 import { useAppSelector } from "../../hooks/hook";
 import "./Quiz.css";
@@ -8,9 +8,7 @@ export const Quiz = () => {
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
   const [showScore, setShowScore] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
-  const [canMoveNext, setCanMoveNext] = useState<boolean>(false);
 
   const handleAnswerOptionClick = (isCorrect: boolean, answer: string) => {
     if (isCorrect) {
@@ -23,22 +21,15 @@ export const Quiz = () => {
       return updatedAnswers;
     });
 
-    
-    setCanMoveNext(true);
+    // Keyingi savolga o'tish (oxirgi savol bo'lmasa)
+    setTimeout(() => {
+      if (currentQuestion < questions.length - 1) {
+        setCurrentQuestion((prev) => prev + 1);
+      } else {
+        setShowScore(true);
+      }
+    }, 300);
   };
-
-  useEffect(() => {
-    if (canMoveNext) {
-      setTimeout(() => {
-        if (currentQuestion < questions.length - 1) {
-          setCurrentQuestion((prev) => prev + 1);
-        } else {
-          setShowScore(true);
-        }
-        setCanMoveNext(false);
-      }, 300);
-    }
-  }, [canMoveNext, currentQuestion, questions.length]);
 
   const handlePlayAgainClick = () => {
     setCurrentQuestion(0);
