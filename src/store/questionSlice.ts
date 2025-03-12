@@ -4,18 +4,7 @@ import { IQuestion } from "../types/type";
 
 export const getQuestions = createAsyncThunk(
   "question/getQuestions",
-  async ({ category, difficulty }: { category: string; difficulty: string }, { rejectWithValue }) => {
-    const apiKey = localStorage.getItem('token');
-    const limit = localStorage.getItem('limit');
-
-    if (!apiKey) {
-      return rejectWithValue("Токен не найден");
-    }
-
-    if (!limit) {
-      return rejectWithValue("Токен не найден");
-    }
-
+  async ({apiKey, limit, category, difficulty }: {apiKey:string, limit: number, category: string; difficulty: string }, { rejectWithValue }) => {
     try {
       const response = await axios.get(
         `https://quizapi.io/api/v1/questions?apiKey=${apiKey}&limit=${limit}&category=${category}&difficulty=${difficulty}`,

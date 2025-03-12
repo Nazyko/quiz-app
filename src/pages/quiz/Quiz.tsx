@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { useAppSelector } from "../../hooks/hook";
 import { AnswerSection } from "../../components/answers/AnswerSection";
+import { useAppSelector } from "../../hooks/hook";
+
 
 export const Quiz = () => {
-  const { questions } = useAppSelector((state) => state.question);
+  const { questions, loading, error } = useAppSelector((state) => state.question);
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
   const [showScore, setShowScore] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
@@ -33,9 +34,14 @@ export const Quiz = () => {
     setSelectedAnswers([]);
   };
 
-  if (questions.length === 0) {
+  if (loading) {
     return <p>Loading...</p>;
   }
+
+  if(error) {
+    return <p>Error: {error}</p>
+  }
+
 
   return (
     <div className="wrapper">
@@ -72,6 +78,6 @@ export const Quiz = () => {
           </div>
         )}
       </div>
-    </div>
+    </div>    
   );
 };

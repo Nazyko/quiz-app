@@ -1,9 +1,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit"
-import categoryReducer from "./categorySlice"
 import questionReducer from "./questionSlice"
 
 const rootReducer = combineReducers({
-    category: categoryReducer,
     question: questionReducer,  
 })
 
