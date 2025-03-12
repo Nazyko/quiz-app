@@ -1,32 +1,44 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AnswerSection } from "./AnswerSection";
 import { useAppSelector } from "../../hooks/hook";
-import "./Quiz.css"
-
+import "./Quiz.css";
 
 export const Quiz = () => {
   const { questions, loading, error } = useAppSelector((state) => state.question);
   const [currentQuestion, setCurrentQuestion] = useState<number>(0);
   const [showScore, setShowScore] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
+  const [canMoveNext, setCanMoveNext] = useState<boolean>(false);
 
   const handleAnswerOptionClick = (isCorrect: boolean, answer: string) => {
     if (isCorrect) {
       setScore((prev) => prev + 1);
     }
 
-    const updatedSelectedAnswers = [...selectedAnswers];
-    updatedSelectedAnswers[currentQuestion] = answer;
-    setSelectedAnswers(updatedSelectedAnswers);
+    setSelectedAnswers((prev) => {
+      const updatedAnswers = [...prev];
+      updatedAnswers[currentQuestion] = answer;
+      return updatedAnswers;
+    });
 
-    const nextQuestion = currentQuestion + 1;
-    if (nextQuestion < questions.length) {
-      setCurrentQuestion(nextQuestion);
-    } else {
-      setShowScore(true);
-    }
+    
+    setCanMoveNext(true);
   };
+
+  useEffect(() => {
+    if (canMoveNext) {
+      setTimeout(() => {
+        if (currentQuestion < questions.length - 1) {
+          setCurrentQuestion((prev) => prev + 1);
+        } else {
+          setShowScore(true);
+        }
+        setCanMoveNext(false);
+      }, 300);
+    }
+  }, [canMoveNext, currentQuestion, questions.length]);
 
   const handlePlayAgainClick = () => {
     setCurrentQuestion(0);
@@ -39,10 +51,9 @@ export const Quiz = () => {
     return <p>Loading...</p>;
   }
 
-  if(error) {
-    return <p>Error: {error}</p>
+  if (error) {
+    return <p>Error: {error}</p>;
   }
-
 
   return (
     <div className="wrapper">
@@ -70,15 +81,15 @@ export const Quiz = () => {
 
             <div className="navigation-buttons">
               {currentQuestion > 0 && (
-                <button onClick={() => setCurrentQuestion(currentQuestion - 1)}>Previous</button>
+                <button onClick={() => setCurrentQuestion((prev) => prev - 1)}>Previous</button>
               )}
               {currentQuestion < questions.length - 1 && (
-                <button onClick={() => setCurrentQuestion(currentQuestion + 1)}>Next</button>
+                <button onClick={() => setCurrentQuestion((prev) => prev + 1)}>Next</button>
               )}
             </div>
           </div>
         )}
       </div>
-    </div>    
+    </div>
   );
 };
