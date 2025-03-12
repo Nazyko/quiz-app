@@ -21,7 +21,6 @@ export const Quiz = () => {
       return updatedAnswers;
     });
 
-    // Keyingi savolga o'tish (oxirgi savol bo'lmasa)
     setTimeout(() => {
       if (currentQuestion < questions.length - 1) {
         setCurrentQuestion((prev) => prev + 1);
@@ -68,6 +67,7 @@ export const Quiz = () => {
               questions={questions}
               currentQuestion={currentQuestion}
               handleAnswerOptionClick={handleAnswerOptionClick}
+              selectedAnswer={selectedAnswers[currentQuestion] || ""}
             />
 
             <div className="navigation-buttons">

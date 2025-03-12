@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Quiz.css";
 
 interface AnswerSectionProps {
@@ -8,11 +8,11 @@ interface AnswerSectionProps {
   }[];
   currentQuestion: number;
   handleAnswerOptionClick: (isCorrect: boolean, answer: string) => void;
+  selectedAnswer: string; // Yangi prop qo'shildi
 }
 
 export const AnswerSection: React.FC<AnswerSectionProps> = React.memo(
-  ({ questions, currentQuestion, handleAnswerOptionClick }) => {
-    const [isAnswered, setIsAnswered] = useState<boolean>(false); 
+  ({ questions, currentQuestion, handleAnswerOptionClick, selectedAnswer }) => {
     const current = questions[currentQuestion];
 
     if (!current || !current.answers || !current.correct_answers) return null;
@@ -22,16 +22,17 @@ export const AnswerSection: React.FC<AnswerSectionProps> = React.memo(
         {Object.entries(current.answers).map(([key, value]) =>
           value ? (
             <button
-              className={`answer-options ${isAnswered ? "disabled" : ""}`} 
+              className={`answer-options ${
+                selectedAnswer === value ? "selected-answer" : ""
+              }`}
               key={key}
               onClick={() => {
-                if (!isAnswered) {
-                  setIsAnswered(true); 
+                if (!selectedAnswer) {
                   const isCorrect = current.correct_answers?.[`${key}_correct`] === "true";
                   handleAnswerOptionClick(isCorrect, value);
                 }
               }}
-              disabled={isAnswered}
+              disabled={!!selectedAnswer} 
             >
               {value}
             </button>
