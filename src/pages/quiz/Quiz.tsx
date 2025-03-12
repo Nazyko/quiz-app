@@ -72,10 +72,10 @@ export const Quiz = () => {
 
             <div className="navigation-buttons">
               {currentQuestion > 0 && (
-                <button onClick={() => setCurrentQuestion((prev) => prev - 1)}>Previous</button>
+                <button onClick={() => setCurrentQuestion((prev) => prev - 1)}>Aldınǵı</button>
               )}
               {currentQuestion < questions.length - 1 && (
-                <button onClick={() => setCurrentQuestion((prev) => prev + 1)}>Next</button>
+                <button onClick={() => setCurrentQuestion((prev) => prev + 1)}>Keyingi</button>
               )}
             </div>
           </div>
