@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { AnswerSection } from "../../components/answers/AnswerSection";
+import { AnswerSection } from "./AnswerSection";
 import { useAppSelector } from "../../hooks/hook";
+import "./Quiz.css"
 
 
 export const Quiz = () => {
