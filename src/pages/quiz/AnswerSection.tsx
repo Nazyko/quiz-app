@@ -1,5 +1,5 @@
 import React from "react";
-import "./Quiz.css"
+import "./Quiz.css";
 
 interface AnswerSectionProps {
   questions: {
@@ -14,24 +14,24 @@ export const AnswerSection: React.FC<AnswerSectionProps> = React.memo(
   ({ questions, currentQuestion, handleAnswerOptionClick }) => {
     const current = questions[currentQuestion];
 
-    if (!current) return null;
+    if (!current || !current.answers || !current.correct_answers) return null;
 
     return (
       <div className="answer-section">
-        {current.answers &&
-          Object.entries(current.answers).map(([key, value]) =>
-            value ? (
-              <button
-                className="answer-options"
-                key={key}
-                onClick={() =>
-                  handleAnswerOptionClick(current.correct_answers?.[`${key}_correct`] === "true", value)
-                }
-              >
-                {value}
-              </button>
-            ) : null
-          )}
+        {Object.entries(current.answers).map(([key, value]) =>
+          value ? (
+            <button
+              className="answer-options"
+              key={key}
+              onClick={() => {
+                const isCorrect = current.correct_answers?.[`${key}_correct`] === "true";
+                handleAnswerOptionClick(isCorrect, value);
+              }}
+            >
+              {value}
+            </button>
+          ) : null
+        )}
       </div>
     );
   }
